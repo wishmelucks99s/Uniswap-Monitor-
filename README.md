@@ -1,81 +1,140 @@
-# Intercom
+# 🔥 Live ETH Swap Monitor
 
-This repository is a reference implementation of the **Intercom** stack on Trac Network for an **internet of agents**.
 
-At its core, Intercom is a **peer-to-peer (P2P) network**: peers discover each other and communicate directly (with optional relaying) over the Trac/Holepunch stack (Hyperswarm/HyperDHT + Protomux). There is no central server required for sidechannel messaging.
+![Deskripsi Gambar](images/gambar.png)
+![Deskripsi Gambar](images/gambar.png)
 
-Features:
-- **Sidechannels**: fast, ephemeral P2P messaging (with optional policy: welcome, owner-only write, invites, PoW, relaying).
-- **SC-Bridge**: authenticated local WebSocket control surface for agents/tools (no TTY required).
-- **Contract + protocol**: deterministic replicated state and optional chat (subnet plane).
-- **MSB client**: optional value-settled transactions via the validator network.
 
-Additional references: https://www.moltbook.com/post/9ddd5a47-4e8d-4f01-9908-774669a11c21 and moltbook m/intercom
+Real-time ETH swap monitor powered by Uniswap V2 and Alchemy.  
+Displays live swaps, ETH price movement, and 24H volume directly in a web dashboard.
 
-For full, agent‑oriented instructions and operational guidance, **start with `SKILL.md`**.  
-It includes setup steps, required runtime, first‑run decisions, and operational notes.
-
-## Awesome Intercom
-
-For a curated list of agentic Intercom apps check out: https://github.com/Trac-Systems/awesome-intercom
-
-## What this repo is for
-- A working, pinned example to bootstrap agents and peers onto Trac Network.
-- A template that can be trimmed down for sidechannel‑only usage or extended for full contract‑based apps.
-
-## How to use
-Use the **Pear runtime only** (never native node).  
-Follow the steps in `SKILL.md` to install dependencies, run the admin peer, and join peers correctly.
-
-## Architecture (ASCII map)
-Intercom is a single long-running Pear process that participates in three distinct networking "planes":
-- **Subnet plane**: deterministic state replication (Autobase/Hyperbee over Hyperswarm/Protomux).
-- **Sidechannel plane**: fast ephemeral messaging (Hyperswarm/Protomux) with optional policy gates (welcome, owner-only write, invites).
-- **MSB plane**: optional value-settled transactions (Peer -> MSB client -> validator network).
-
-```text
-                          Pear runtime (mandatory)
-                pear run . --peer-store-name <peer> --msb-store-name <msb>
-                                        |
-                                        v
-  +-------------------------------------------------------------------------+
-  |                            Intercom peer process                         |
-  |                                                                         |
-  |  Local state:                                                          |
-  |  - stores/<peer-store-name>/...   (peer identity, subnet state, etc)    |
-  |  - stores/<msb-store-name>/...    (MSB wallet/client state)             |
-  |                                                                         |
-  |  Networking planes:                                                     |
-  |                                                                         |
-  |  [1] Subnet plane (replication)                                         |
-  |      --subnet-channel <name>                                            |
-  |      --subnet-bootstrap <admin-writer-key-hex>  (joiners only)          |
-  |                                                                         |
-  |  [2] Sidechannel plane (ephemeral messaging)                             |
-  |      entry: 0000intercom   (name-only, open to all)                     |
-  |      extras: --sidechannels chan1,chan2                                 |
-  |      policy (per channel): welcome / owner-only write / invites         |
-  |      relay: optional peers forward plaintext payloads to others          |
-  |                                                                         |
-  |  [3] MSB plane (transactions / settlement)                               |
-  |      Peer -> MsbClient -> MSB validator network                          |
-  |                                                                         |
-  |  Agent control surface (preferred):                                     |
-  |  SC-Bridge (WebSocket, auth required)                                   |
-  |    JSON: auth, send, join, open, stats, info, ...                       |
-  +------------------------------+------------------------------+-----------+
-                                 |                              |
-                                 | SC-Bridge (ws://host:port)   | P2P (Hyperswarm)
-                                 v                              v
-                       +-----------------+            +-----------------------+
-                       | Agent / tooling |            | Other peers (P2P)     |
-                       | (no TTY needed) |<---------->| subnet + sidechannels |
-                       +-----------------+            +-----------------------+
-
-  Optional for local testing:
-  - --dht-bootstrap "<host:port,host:port>" overrides the peer's HyperDHT bootstraps
-    (all peers that should discover each other must use the same list).
-```
+Built with Node.js, Express, Socket.io, and Ethers.js.
 
 ---
-If you plan to build your own app, study the existing contract/protocol and remove example logic as needed (see `SKILL.md`).
+
+## 🚀 Features
+
+- ✅ Real-time ETH swap tracking
+- ✅ Live ETH price chart
+- ✅ 24H rolling volume counter
+- ✅ Recent swaps feed
+- ✅ Stable polling mode (no WebSocket dependency)
+- ✅ Clean dark UI
+- ✅ Mobile-friendly dashboard
+
+---
+
+## 🛠 Tech Stack
+
+- Node.js
+- Express.js
+- Socket.io
+- Ethers.js (v6)
+- Chart.js
+- Alchemy RPC
+
+---
+
+## 📡 Data Source
+
+Swaps are monitored from:
+
+Uniswap V2 ETH/USDC Pair (Ethereum Mainnet)
+
+Pair Address:0xB4e16d0168e52d35CaCD2c6185b44281Ec28C9Dc
+
+
+Network:
+Ethereum Mainnet
+
+---
+
+## 📦 Installation
+
+### 1️⃣ Clone Repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
+cd YOUR_REPO
+
+
+2️⃣ Install Dependencies
+
+npm install
+
+3️⃣ Add Alchemy API Key
+
+Open server.js and replace:
+
+const API_KEY = "PASTE_ALCHEMY_KEY_DISINI";
+
+
+With your actual Alchemy API key.
+You can get one from: https://www.alchemy.com/�
+
+
+▶️ Run Server
+
+node server.js
+
+
+📁 Project Structure
+
+uniswap-monitor/
+│
+├── server.js
+├── package.json
+├── node_modules/
+└── public/
+    └── index.html
+
+
+📊 How It Works
+
+-Polls Ethereum mainnet every 3 seconds
+-Queries Swap events from Uniswap V2 pair contract
+-Extracts ETH amount & price
+-Emits data via Socket.io
+-Frontend updates chart + recent swaps live
+
+
+⚙️ Configuration
+
+You can modify:
+Polling interval:
+
+setInterval(pollSwaps, 3000);
+
+
+Filter small swaps: Add condition inside swap handler:
+
+JavaScript
+
+if (ethAmount < 1) return;
+
+
+
+🔒 Stability
+
+
+This version uses Polling Mode instead of WebSocket
+to prevent:
+-WS disconnect issues
+-401 errors
+-Idle timeout on free RPC tiers
+
+
+More stable for:
+-Termux
+-VPS
+-Low-resource environments
+
+
+⚠️ Disclaimer
+
+
+This project is for educational and monitoring purposes only. Not financial advice.
+
+
+
+TRAC ADDRESS FOR REWARD : trac1hjs6g37vxvrhwgv46gkywvzzmjxt8c6fd63cs9ex82xp6ckhs2hs3ysuhm
