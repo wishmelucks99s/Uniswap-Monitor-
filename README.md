@@ -1,8 +1,8 @@
 # 🔥 Live ETH Swap Monitor
 
 
-![Deskripsi Gambar](images/gambar.png)
-![Deskripsi Gambar](images/gambar.png)
+![Deskripsi Gambar](Screenshot_2026_0221_063225.jpg)
+![Deskripsi Gambar](Screenshot_2026_0221_063208.jpg)
 
 
 Real-time ETH swap monitor powered by Uniswap V2 and Alchemy.  
