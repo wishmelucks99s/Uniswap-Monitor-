@@ -1,3 +1,8 @@
+TRAC ADDRESS FOR REWARD : trac1hjs6g37vxvrhwgv46gkywvzzmjxt8c6fd63cs9ex82xp6ckhs2hs3ysuhm
+
+
+
+
 # 🔥 Live ETH Swap Monitor
 
 
@@ -54,7 +59,7 @@ Ethereum Mainnet
 ### 1️⃣ Clone Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
+git clone https://github.com/wishmelucks99s/Uniswap-Monitor-/tree/main.git
 cd YOUR_REPO
 
 
